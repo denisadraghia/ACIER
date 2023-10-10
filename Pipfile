@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+plotly = "*"
+nbformat = "*"
+basemap = "*"
+geopandas = "*"
+descartes = "*"
+shapely = "*"
+countries = "*"
+reverse-geocoder = "*"
+tables = "*"
+swifter = "*"
+joblib = "*"
+seaborn = "*"
+global-land-mask = "*"
+cartopy = "*"
+pyglet = "*"
+mapclassify = "*"
+numpy = "*"
+
+[dev-packages]
+ipykernel = "*"
+
+[requires]
+python_version = "3.9"
