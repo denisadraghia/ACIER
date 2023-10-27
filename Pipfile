@@ -21,6 +21,11 @@ cartopy = "*"
 pyglet = "*"
 mapclassify = "*"
 numpy = "*"
+datashader = "*"
+zenodo-get = "*"
+pymrio = "*"
+climada = "*"
+numba = "*"
 
 [dev-packages]
 ipykernel = "*"
