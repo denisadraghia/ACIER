@@ -31,6 +31,8 @@ def land_reference_subunit(long_min, long_max, lat_min, lat_max, step):
 
 
 def construct_grid(continent, step):
+    '''Constructs grids for a certain continent with a resolution=step (measured in
+     degrees). Not all continents included yet...'''
     continent_coordinates = {'Europe':(-10,60,31,70), 'Africa': (-18,51,-35,38),
                              'Central & South America':(-95,-34,-56,24),
                              'North America':(-180,-45,0,90),

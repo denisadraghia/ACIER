@@ -17,7 +17,8 @@ def weigths_continent(continent):
 
 
 def weighted_plants_dataset(continent):
-    ''''''
+    '''Returns a dataset where the a plant appears a number of times proportional to 
+    its capacity'''
     if continent=="world":
         steel_plants=df_gspt
     else:
