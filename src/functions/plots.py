@@ -120,4 +120,46 @@ def format_database(litpop_database):
     work=work[['latitude','longitude','litpop_density','kernel_density']]
     work = work.groupby(['latitude', 'longitude']).agg({'litpop_density': 'sum',
                                                         'kernel_density': 'sum'}).reset_index()
-    work=work.sort_values(by=['latitude', 'longitude'])    
+    work=work.sort_values(by=['latitude', 'longitude'])
+    return work
+
+def create_linear_combination_column(database,alpha):
+    database["combination"]=alpha*database["litpop_density"]+(1-alpha)*database["kernel_density"]
+    return database
+
+
+def plot_density_combination(litpop_database,alpha):
+    formatted_data=format_database(litpop_database)
+    work=create_linear_combination_column(formatted_data,alpha)
+    xgrid,ygrid=construct_grid('world',0.1)
+    X, Y = np.meshgrid(xgrid, ygrid)
+    land_mask = np.load("data\intermediary_data\land_mask\land_mask_world.npy")
+    xy = np.vstack([Y.ravel(), X.ravel()]).T
+    xy = xy[land_mask]
+    mapping = {}
+    for elem in xy:
+        _key = tuple([round(elem[1],1), round(elem[0],1)])
+        mapping[_key] = 0
+    for idx, row in work.iterrows():
+        key = (round(row.longitude, 1), round(row.latitude, 1))
+        if key in mapping:
+            mapping[key] = row.combination
+    c=list(mapping.values())
+    c=np.array(c)
+    c=c*1000000
+    fig, ax = plt.subplots(1, 1)
+    m=Basemap(projection='cyl', llcrnrlat=Y.min(),urcrnrlat=Y.max(), llcrnrlon=X.min(),
+                urcrnrlon=X.max(), resolution='c')
+    m.drawmapboundary(fill_color='#DDEEFF')
+    m.drawcoastlines()
+    m.drawcountries()
+    m.fillcontinents(color="#87139c")
+
+    Z = np.full(land_mask.shape[0], -9999)
+    Z[land_mask] = c
+    Z = Z.reshape(X.shape)
+
+    # plot contours of the density
+    levels = np.linspace(0, Z.max(),100)
+    ax.contourf(X, Y, Z,levels=levels,cmap='viridis')
+   
