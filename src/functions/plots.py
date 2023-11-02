@@ -11,15 +11,19 @@ sklearn.set_config(enable_metadata_routing=True)
 from sklearn.neighbors import KernelDensity
 from sklearn.model_selection import GridSearchCV
 path="P:\\Projets Internes\\PLADIFES\\PLADIFES DATA CREATION\\Sectorial wealth\\"
-df_gspt=pd.read_csv(path+"data\\clean_data\\steel_factories_dataset.csv")
+df_gspt=pd.read_csv(path+"data\\clean_data\\steel_factories_dataset_reg.csv")
 
 def choose_bandwidth(continent,noyau):
     '''Returns optimal bandiwidth (argument that maximizes log-likelihood) for the steel
     plants dataset for a certain continent and a certain kernel '''
+    if continent =="world":
+        steel_dataset=df_gspt
+    else:
+        steel_dataset=df_gspt.loc[df_gspt["Region"]==continent]
     param_grid = {'bandwidth': np.linspace(0.001, 1, 100)}
     kde = KernelDensity(metric='haversine',kernel=noyau)
-    df_gspt_europe=df_gspt.loc[df_gspt["Region"] == continent]
-    X=np.radians(coordinates_change(df_gspt_europe))
+    
+    X=np.radians(coordinates_change(steel_dataset))
     grid_search = GridSearchCV(kde, param_grid, cv=10)
     grid_search.fit(X)  
     best_bandwidth = grid_search.best_params_['bandwidth']
@@ -51,20 +55,16 @@ def unweighted_plot_density(continent,noyau, h):
     kde.fit(np.radians(coordinates_change(steel_dataset)))
 
     # evaluate only on the land: -9999 indicates ocean
-    Z = np.full(land_mask.shape[0], -9999)
+    Z = np.full(land_mask.shape[0], -9999,dtype=np.float64)
     Z[land_mask] = np.exp(kde.score_samples(xy))
     divisor=Z[land_mask].sum()
     Z = Z.reshape(X.shape)
 
     # plot contours of the density
-    def custom_formatter(x, pos):
-        scaled_value = x / divisor # Divide by 10^5
-        
-        return f"{scaled_value:.6f}"
     levels = np.linspace(0, Z.max(),100)
     contour=ax.contourf(X, Y, Z,levels=levels,cmap='viridis')
     cbar = plt.colorbar(contour)
-    cbar.ax.yaxis.set_major_formatter(FuncFormatter(custom_formatter))
+    cbar.ax.yaxis.set_major_formatter(FuncFormatter(lambda x, pos: f"{x / divisor:.6f}"))
     ax.set_title("Kernel Density Estimation with "+noyau+" kernel and bandwidth h="+str(h)) 
     #h=0.007 radians= 50km
     
@@ -90,19 +90,17 @@ def weighted_plants_plot_density(continent, noyau, h):
     kde = KernelDensity(bandwidth=h, metric='haversine',kernel=noyau)
     kde.fit(np.radians(weighted_plants_dataset(continent)))
     # evaluate only on the land: -9999 indicates ocean
-    Z = np.full(land_mask.shape[0], -9999)
+    Z = np.full(land_mask.shape[0], -9999,dtype=np.float64)
     Z[land_mask] = np.exp(kde.score_samples(xy))
     divisor=Z[land_mask].sum()
     Z = Z.reshape(X.shape)
 
     # plot contours of the density
-    def custom_formatter(x, pos):
-        scaled_value = x / divisor # Divide by 10^5
-        return f"{scaled_value:.6f}"
+    
     levels = np.linspace(0, Z.max(),100)
     contour=ax.contourf(X, Y, Z,levels=levels,cmap='viridis')
     cbar = plt.colorbar(contour)
-    cbar.ax.yaxis.set_major_formatter(FuncFormatter(custom_formatter))
+    cbar.ax.yaxis.set_major_formatter(FuncFormatter(lambda x, pos: f"{x / divisor:.6f}"))
     ax.set_title("Kernel Density Estimation with "+noyau+" kernel and bandwidth h="+str(h)) 
 
 
@@ -131,19 +129,17 @@ def weighted_plot_density(continent, noyau, h):
             sample_weight=weights)
 
     # evaluate only on the land: -9999 indicates ocean
-    Z = np.full(land_mask.shape[0], -9999)
+    Z = np.full(land_mask.shape[0], -9999,dtype=np.float64)
     Z[land_mask] = np.exp(kde.score_samples(xy))
     divisor=Z[land_mask].sum()
     Z = Z.reshape(X.shape)
 
     # plot contours of the density
-    def custom_formatter(x, pos):
-        scaled_value = x / divisor 
-        return f"{scaled_value:.6f}"
+    
     levels = np.linspace(0, Z.max(),100)
     contour=ax.contourf(X, Y, Z,levels=levels,cmap='viridis')
     cbar = plt.colorbar(contour)
-    cbar.ax.yaxis.set_major_formatter(FuncFormatter(custom_formatter))
+    cbar.ax.yaxis.set_major_formatter(FuncFormatter(lambda x, pos: f"{x / divisor:.6f}"))
     ax.set_title("Kernel Density Estimation with "+noyau+" kernel and bandwidth h="+str(h)) 
 
 
@@ -195,19 +191,17 @@ def plot_density_combination(litpop_database,alpha):
     m.drawcountries()
     m.fillcontinents(color="#87139c")
 
-    Z = np.full(land_mask.shape[0], -9999)
+    Z = np.full(land_mask.shape[0], -9999,dtype=np.float64)
     Z[land_mask] = c
     divisor=c.sum()
     Z = Z.reshape(X.shape)
 
     # plot contours of the density
-    def custom_formatter(x, pos):
-        scaled_value = x / divisor 
-        return f"{scaled_value:.6f}"
+    
     levels = np.linspace(0, Z.max(),100)
     contour=ax.contourf(X, Y, Z,levels=levels,cmap='viridis')
     cbar = plt.colorbar(contour)
-    cbar.ax.yaxis.set_major_formatter(FuncFormatter(custom_formatter))
+    cbar.ax.yaxis.set_major_formatter(FuncFormatter(lambda x, pos: f"{x / divisor:.6f}"))
     
     ax.set_title("Density mix with a proportion of LitPop alpha="+str(alpha)) 
    

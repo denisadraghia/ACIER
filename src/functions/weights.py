@@ -1,7 +1,10 @@
 import pandas as pd
 import numpy as np
-from src.functions.basic_functions import coordinates_change,globus
-df_gspt=pd.read_csv("data\clean_data\steel_factories_dataset.csv")
+from src.functions.basic_functions import coordinates_change
+
+path="P:\\Projets Internes\\PLADIFES\\PLADIFES DATA CREATION\\Sectorial wealth\\"
+df_gspt=pd.read_csv(path+"data\\clean_data\\steel_factories_dataset_reg.csv")
+
 
 def weigths_continent(continent):
     '''Returns the weights of each steel plant proportional to its capacity on a

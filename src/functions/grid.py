@@ -7,7 +7,8 @@ from sklearn.neighbors import KernelDensity
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 from src.GSPTDataset import GSPTDataset
-df_gspt=pd.read_csv("data\clean_data\steel_factories_dataset.csv")
+path="P:\\Projets Internes\\PLADIFES\\PLADIFES DATA CREATION\\Sectorial wealth\\"
+df_gspt=pd.read_csv(path+"data\\clean_data\\steel_factories_dataset_reg.csv")
 
 def land_reference_subunit(long_min, long_max, lat_min, lat_max, step):
     '''Takes the limit coordinates of an area and creates a grid that specifies
@@ -25,7 +26,7 @@ def land_reference_subunit(long_min, long_max, lat_min, lat_max, step):
 
     Z1_array = np.array(Z1)
     land_reference= Z1_array.astype(int)
-    land_reference_99 = [[-9999 if x == 0 else x for x in row] for row in land_reference]
+    land_reference_99 = [[-9999 if x == 0 else x for x in row] for row in land_reference] # -9999 corresponds to oceans
     return np.array(land_reference_99)
 
 
@@ -33,10 +34,13 @@ def land_reference_subunit(long_min, long_max, lat_min, lat_max, step):
 def construct_grid(continent, step):
     '''Constructs grids for a certain continent with a resolution=step (measured in
      degrees). Not all continents included yet...'''
-    continent_coordinates = {'Europe':(-10,60,31,70), 'Africa': (-18,51,-35,38),
+    continent_coordinates = {'Europe':(-10,42,31,70), 'Africa': (-18,51,-35,38),
                              'Central & South America':(-95,-34,-56,24),
-                             'North America':(-180,-45,0,90),
-                             'world':(-180,180,-90,90)}
+                             'North America':(-180,-45,14,90),
+                             'Australia':(112,180,-47,-10),
+                             'Asia':(32,180,-10,90),
+                             'world':(-180,180,-90,90)
+                             }
     coordinates= continent_coordinates[continent]
     long_min, long_max, lat_min, lat_max=coordinates
     xgrid=np.arange(long_min, long_max,step)

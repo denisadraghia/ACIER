@@ -64,13 +64,7 @@ def von_mises_mu(data):
     return mu_fit
 
 
-def haversine(lat1, lon1, lat2, lon2):
-    '''Computes haversine distance between 2 coordinates'''
-    dlat = lat2 - lat1
-    dlon = lon2 - lon1
-    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
-    c = 2 * arctan2(sqrt(a), sqrt(1 - a))
-    return c
+
 
 
 def geo(lat,lon,h):
