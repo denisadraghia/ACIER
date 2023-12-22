@@ -82,7 +82,7 @@ def geo_great_circle(lat_lon,h,tuple_steel):
     lat, lon = lat_lon
     coordinate=np.array([lat,lon])
     def distance(tuple_steel_coordinate):
-        return great_circle(coordinate,tuple_steel_coordinate).kilometers /6371 # rayon de la terre
+        return great_circle(coordinate,tuple_steel_coordinate).kilometers /6371 # rayon de la Terre
     distances=list(map(distance,tuple_steel))
     return -sum(distances)/h
 
@@ -106,3 +106,5 @@ def list_coordinates(data):
     coordinates=data[['latitude','longitude']]
     list_coordinates=[tuple(row) for row in coordinates.to_records(index=False)]
     return list_coordinates
+
+

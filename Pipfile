@@ -26,6 +26,7 @@ zenodo-get = "*"
 pymrio = "*"
 climada = "*"
 numba = "*"
+boario = "*"
 
 [dev-packages]
 ipykernel = "*"

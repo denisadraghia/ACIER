@@ -8,7 +8,7 @@ from sklearn.neighbors import KernelDensity
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 from src.GSPTDataset import GSPTDataset
-path="P:\\Projets Internes\\PLADIFES\\PLADIFES DATA CREATION\\Sectorial wealth\\"
+path="C:\\Users\\Denisa.draghia\\Desktop\\Acier\\"
 df_gspt=pd.read_csv(path+"data\\clean_data\\steel_factories_dataset_reg.csv")
 
 def capacity_estimation(h,noyau):

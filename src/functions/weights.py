@@ -2,8 +2,9 @@ import pandas as pd
 import numpy as np
 from src.functions.basic_functions import coordinates_change
 
-path="P:\\Projets Internes\\PLADIFES\\PLADIFES DATA CREATION\\Sectorial wealth\\"
+path="C:\\Users\\Denisa.draghia\\Desktop\\Acier\\"
 df_gspt=pd.read_csv(path+"data\\clean_data\\steel_factories_dataset_reg.csv")
+steel=pd.read_csv(path+"data\\clean_data\\steel_plants_continent_dataset.csv")
 
 
 def weigths_continent(continent):
@@ -13,6 +14,19 @@ def weigths_continent(continent):
         steel_plants=df_gspt
     else:
         steel_plants=df_gspt.loc[df_gspt["Region"] == continent]
+    steel_capacity=steel_plants['Nominal crude steel capacity (ttpa)']
+    total_cap=steel_capacity.sum()
+    my_weights=np.array(steel_capacity/total_cap)
+    return my_weights
+
+
+def weigths_continent2(continent):
+    '''Returns the weights of each steel plant proportional to its capacity on a
+    specified continent. I did it for AUSTRALIA'''
+    if continent=="world":
+        steel_plants=steel
+    else:
+        steel_plants=steel.loc[steel["Region"] == continent]
     steel_capacity=steel_plants['Nominal crude steel capacity (ttpa)']
     total_cap=steel_capacity.sum()
     my_weights=np.array(steel_capacity/total_cap)
