@@ -1,4 +1,5 @@
-# ACIER
+# Pladifes Physical Risk Module
+## Future economic damages estimations tied to physical disasters based on sectoral wealth densities
 
 In this project we compute sectorial wealth distributions for the Steel, Cement and Electricity Generation Sectors using a non-parametric kernel method. (for the moment only Steel has been done)
 
