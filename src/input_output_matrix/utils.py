@@ -4,13 +4,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import country_converter as coco
 
-def country_list_2letters():
+def country_dict_name_to_iso():
     countries = {}
     for country in pycountry.countries:
         countries[country.name] = country.alpha_2
     return countries
 
-def read_matrix(year):
+def load_exiobase(year):
     '''Read input-output matrix for a given year'''
     exio3=pymrio.parse_exiobase3('IOT_'+str(year)+'_pxp.zip')
     exio3.calc_all()
@@ -41,12 +41,12 @@ def aggregate_sectors(sector,specific_sector,rebuilding):
 
 
 def aggregation(base,country,specific_sector, rebuilding):
-    '''It will aggregate the Exiobase for the year_base in one country and the rest 
+    '''It will aggregate the Exiobase in one country and the rest 
     of world (ROW) and one sector (among steel, cement, electricity generation for the 
     moment) and construction (if rebuilding) + the other sectors.'''
     
     exio=base.copy()
-    countries=country_list_2letters()
+    countries=country_dict_name_to_iso()
     reg_agg_coco = coco.agg_conc(original_countries=exio.get_regions(),
                                  aggregates={countries[country]:country},
                                  missing_countries="ROW",)
@@ -65,7 +65,7 @@ def compute_total_damage(df):
     return sum_by_columns
 
 
-def plot(df,country):
+def plot_production_evolution(df,country):
     '''Plots the evolution of the realised production. 
     It takes as argument a dataframe with the results of ARIO model's simulation and
     it plots them for a specific country '''
