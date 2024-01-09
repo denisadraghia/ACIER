@@ -16,3 +16,8 @@ First, we estimate sectoral densities based on the physical assets for heavy ind
 This densities will be used to estimate tropical cyclone damages using the Python module Catherina.
 Once the damages computed, we'll analyse how they propagate in the economy, from one sector to another using the ARIO model and BoArio python package.
 
+## <a id="pladifes"></a> Pladifes
+
+Pladifes is a research program aiming at easing the research in green and sustainable finance, as well as traditional one. They are the main authors of <b>CGEE</b>. Learn more about Pladifes [here](https://www.institutlouisbachelier.org/en/pladifes-a-large-financial-and-extra-financial-database-project-2/).
+
+Databases produced in the context of this project are available [here](https://pladifes.institutlouisbachelier.org/data/#ghg-estimations). Other Paldifes databases can be access [here (only ESG)](https://pladifes.institutlouisbachelier.org/data/) and [here (financial and soon ESG)](https://www.eurofidai.org/).
