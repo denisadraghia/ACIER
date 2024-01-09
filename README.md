@@ -26,12 +26,9 @@ Databases produced in the context of this project are available [here](https://p
 # <a id="refs"></a> References
 
 Our approch is highly inspired from the following publications and discussion with some of the main authors:
--['Le Guenedal, T., Drobinski, P., and Tankov, P.: Cyclone generation Algorithm including a THERmodynamic module for Integrated National damage Assessment (CATHERINA 1.0) compatible with Coupled Model Intercomparison Project (CMIP) climate data, Geosci. Model Dev., 15, 8001–8039,']
-(https://doi.org/10.5194/gmd-15-8001-2022)
 
--['S.Hallegate,Modeling the Role of Inventories and Heterogeneity in the
-Assessment of the Economic Costs of Natural Disasters']
-(https://pubmed.ncbi.nlm.nih.gov/23834029/)
+-[`Le Guenedal, T., Drobinski, P., and Tankov, P.: Cyclone generation Algorithm including a THERmodynamic module for Integrated National damage Assessment (CATHERINA 1.0) compatible with Coupled Model Intercomparison Project (CMIP) climate data, Geosci. Model Dev., 15, 8001–8039,`](https://doi.org/10.5194/gmd-15-8001-2022)
 
--['Samuel Juhel, Adrien Delahais, Vincent Viguie. Robustness of the evaluation of indirect costs of natural disasters: example of the ARIO model. 2023']
-(https://hal.science/hal-04196749/document)
+-[`S.Hallegate,Modeling the Role of Inventories and Heterogeneity in the Assessment of the Economic Costs of Natural Disasters`](https://pubmed.ncbi.nlm.nih.gov/23834029)
+
+-[`Samuel Juhel, Adrien Delahais, Vincent Viguie. Robustness of the evaluation of indirect costs of natural disasters: example of the ARIO model.`](https://hal.science/hal-04196749/document)
