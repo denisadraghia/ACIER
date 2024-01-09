@@ -34,4 +34,4 @@ Assessment of the Economic Costs of Natural Disasters']
 (https://pubmed.ncbi.nlm.nih.gov/23834029/)
 
 -['Samuel Juhel, Adrien Delahais, Vincent Viguie. Robustness of the evaluation of indirect costs of natural disasters: example of the ARIO model. 2023']
-()
+(https://hal.science/hal-04196749/document)
