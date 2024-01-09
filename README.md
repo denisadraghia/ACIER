@@ -22,6 +22,42 @@ Pladifes is a research program aiming at easing the research in green and sustai
 
 Databases produced in the context of this project are available [here](https://pladifes.institutlouisbachelier.org/data/#ghg-estimations). Other Paldifes databases can be access [here (only ESG)](https://pladifes.institutlouisbachelier.org/data/) and [here (financial and soon ESG)](https://www.eurofidai.org/).
 
+# <a id="quickstart"></a> Quickstart 🚀
+
+## <a id="installation"></a> Installation
+
+### <a id="get"></a> Getting the code
+
+You can download a copy of all the files in this repository by cloning the
+[git](https://git-scm.com/) repository:
+
+    https://github.com/Pladifes/corporate-ghg-emissions-estimations.git
+
+### <a id="dependencies"></a> Dependencies
+
+You'll need a working Python environment to run the code.
+The required dependencies are specified in the file `Pipfile`.
+We use `pipenv` virtual environments to manage the project dependencies in
+isolation.
+
+Thus, you can install our dependencies without causing conflicts with your
+setup (for a Python >= 3.9).
+Run the following command in the repository folder (where `Pipfile` and `Pipfile.lock`
+is located) to create a separate environment.
+Make sure pipenv is installed on your system. You can install it using pip by running:
+
+    pip install pipenv
+
+to install all required dependencies in it:
+
+    pipenv install
+
+Once the installation is complete, activate the virtual environment by running:
+
+    pipenv shell
+
+This will activate the virtual environment and you can start working with your installed dependencies.
+
 
 # <a id="refs"></a> References
 
@@ -34,4 +70,13 @@ Our approach is highly inspired by the following publications and discussions wi
 -[`S.Hallegate,Modeling the Role of Inventories and Heterogeneity in the Assessment of the Economic Costs of Natural Disasters`](https://pubmed.ncbi.nlm.nih.gov/23834029)
 
 -[`Samuel Juhel, Adrien Delahais, Vincent Viguie. Robustness of the evaluation of indirect costs of natural disasters: example of the ARIO model.`](https://hal.science/hal-04196749/document)
+
+# <a id="contributing"></a> Contributing 🤝
+
+We are hoping that the open-source community will help us edit the code and improve it!
+
+You are welcome to open issues, even suggest solutions and better still contribute the fix/improvement! We can guide you if you're not sure where to start but want to help us out 🥇
+
+In order to contribute a change to our code base, you can submit a pull request (PR) via GitLab and someone from our team will go over it. Yet, we usually prefer that you reach out to us before doing so at [contact](mailto:pladifes@institutlouisbachelier.org).
+
 
