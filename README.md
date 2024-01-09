@@ -21,3 +21,17 @@ Once the damages computed, we'll analyse how they propagate in the economy, from
 Pladifes is a research program aiming at easing the research in green and sustainable finance, as well as traditional one. They are the main authors of <b>CGEE</b>. Learn more about Pladifes [here](https://www.institutlouisbachelier.org/en/pladifes-a-large-financial-and-extra-financial-database-project-2/).
 
 Databases produced in the context of this project are available [here](https://pladifes.institutlouisbachelier.org/data/#ghg-estimations). Other Paldifes databases can be access [here (only ESG)](https://pladifes.institutlouisbachelier.org/data/) and [here (financial and soon ESG)](https://www.eurofidai.org/).
+
+
+# <a id="refs"></a> References
+
+Our approch is highly inspired from the following publications and discussion with some of the main authors:
+-['Le Guenedal, T., Drobinski, P., and Tankov, P.: Cyclone generation Algorithm including a THERmodynamic module for Integrated National damage Assessment (CATHERINA 1.0) compatible with Coupled Model Intercomparison Project (CMIP) climate data, Geosci. Model Dev., 15, 8001–8039,']
+(https://doi.org/10.5194/gmd-15-8001-2022)
+
+-['S.Hallegate,Modeling the Role of Inventories and Heterogeneity in the
+Assessment of the Economic Costs of Natural Disasters']
+(https://pubmed.ncbi.nlm.nih.gov/23834029/)
+
+-['Samuel Juhel, Adrien Delahais, Vincent Viguie. Robustness of the evaluation of indirect costs of natural disasters: example of the ARIO model. 2023']
+()
