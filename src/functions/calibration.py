@@ -5,6 +5,7 @@ from src.functions.basic_functions import globus, coordinates_change
 from src.functions.grid import construct_grid
 from src.functions.weights import weigths_continent, weighted_plants_dataset
 from sklearn.neighbors import KernelDensity
+from sklearn.metrics import mean_absolute_error,mean_squared_error,r2_score 
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 from src.GSPTDataset import GSPTDataset

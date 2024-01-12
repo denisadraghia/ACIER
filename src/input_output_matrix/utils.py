@@ -3,16 +3,14 @@ import pymrio
 import pandas as pd
 import matplotlib.pyplot as plt
 import country_converter as coco
+import json
 
-def country_dict_name_to_iso():
-    countries = {}
-    for country in pycountry.countries:
-        countries[country.name] = country.alpha_2
-    return countries
+with open("countries_sectors.json", 'r') as file:
+    countries = json.load(file).get('countries', {})
 
 def load_exiobase(year):
     '''Read input-output matrix for a given year'''
-    exio3=pymrio.parse_exiobase3('IOT_'+str(year)+'_pxp.zip')
+    exio3=pymrio.parse_exiobase3('IOT_'+str(year)+'_ixi.zip')
     exio3.calc_all()
     return exio3
 
@@ -40,13 +38,13 @@ def aggregate_sectors(sector,specific_sector,rebuilding):
         return 'other'
 
 
-def aggregation(base,country,specific_sector, rebuilding):
+def aggregation_sector(base,country,specific_sector, rebuilding):
     '''It will aggregate the Exiobase in one country and the rest 
     of world (ROW) and one sector (among steel, cement, electricity generation for the 
     moment) and construction (if rebuilding) + the other sectors.'''
     
     exio=base.copy()
-    countries=country_dict_name_to_iso()
+    
     reg_agg_coco = coco.agg_conc(original_countries=exio.get_regions(),
                                  aggregates={countries[country]:country},
                                  missing_countries="ROW",)
@@ -74,4 +72,32 @@ def plot_production_evolution(df,country):
     df.loc[:, (country, slice(None))].plot()
     plt.xlabel('Days after a disaster')
     plt.ylabel('Percentage of production')
-    plt.title('Evolution of production')
+    plt.title('Evolution of production in '+country)
+
+
+def aggregation_from_excel(sector_excel_file,exio_database,country):
+    '''Returns an aggregation of sectors as indicated in the sector_excel_file for the indicated
+    country and the rest of the world.
+    Inputs:
+    sector_excel_file: excel file with the list of economic sectors and 
+    exio_database: MRIO EXIOBASE3
+    country(str): the country for which we do the aggregation
+    
+    Outputs: An aggregated database (EXIOBASE3 type)'''
+
+
+    df1 = pd.read_excel(sector_excel_file, sheet_name='aggreg_input')
+    df2 = pd.read_excel(sector_excel_file, sheet_name='name_input')
+    merged_df = pd.merge(df1, df2, left_on='group', right_on='group_id', how='left')
+    merged_df = merged_df.drop(['group', 'group_id'], axis=1)
+
+    exio=exio_database.copy()
+    
+    reg_agg_coco = coco.agg_conc(original_countries=exio.get_regions(),
+                                    aggregates={countries[country]:country},
+                                    missing_countries="ROW",)
+    sect_ag=pd.DataFrame()
+
+    exio.aggregate(region_agg=reg_agg_coco,sector_agg=merged_df)
+    exio.calc_all()
+    return exio

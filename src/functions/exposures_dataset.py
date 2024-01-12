@@ -7,11 +7,9 @@ import cartopy.crs as ccrs
 from geopy.distance import  great_circle
 from sklearn.neighbors import KernelDensity
 from src.functions.basic_functions import coordinates_change
-from src.functions.weights import weigths_continent,weigths_continent2
+from src.functions.weights import weigths_continent
 import sklearn
 sklearn.set_config(enable_metadata_routing=True)
-
-steel_plants=pd.read_csv("data\\clean_data\\steel_plants_continent_dataset.csv")
 
 country_codes={'india':'IND','japan':'JPN','australia':'AUS','mexico':'MEX','usa':'USA'}
 country_continent={'india':'Asia Pacific','japan':'Asia Pacific','australia':'Australia',
@@ -25,10 +23,17 @@ def haversine_distance(coord1, coord2):
 
 def plot_circle_proportion_in_land(point_coords,h):
     '''Plots a map with a circle centered in point_coords with a h radius (in km)
-    and computes the percentage of it that is on land.'''
+    and computes the percentage of it that is on land.
+    Inputs:
+    point_coords=(longitude, latitude)
+    h (int) : radius in km
+    
+    Output: 
+    land_circle.boundary(matplotlib.axes._subplots.AxesSubplot)'''
+
     # crs="EPSG:4326" means coordinates in the form (lat,lon)
     gdf_point = gpd.GeoDataFrame(geometry=[Point(point_coords)], crs="EPSG:4326") 
-    buffer_radius_deg = h / 111  
+    buffer_radius_deg = h / 111  # transforms km to degrees
     gdf_circle = gdf_point.copy()
     gdf_circle['geometry'] = gdf_circle.buffer(buffer_radius_deg) # creates circle
     
@@ -51,7 +56,15 @@ def plot_circle_proportion_in_land(point_coords,h):
 
 def correction_coast_factor(point_coords,h):
     '''Computes the factor by which the points that are in a h radius from
-    a plant that is near the coast will be multiplied.'''
+    a plant that is near the coast will be multiplied.
+
+    Inputs:
+    point_coords (float, float)=(longitude, latitude)
+    h (float) : radius in km
+    
+    Outputs:
+    1/proportion_land (float): the factor by which the density of the points which are 
+    within h km from the point_coords will be multiplied.'''
 
     gdf_point = gpd.GeoDataFrame(geometry=[Point(point_coords)], crs="EPSG:4326")
     
@@ -67,41 +80,41 @@ def correction_coast_factor(point_coords,h):
     return 1/proportion_land
 
 
-def database_exposure_country(country, h, noyau):
+def database_exposure_country(input_path,country, h, noyau,asset_database, output_path):
     '''Creates a database exposure (adapted to use with Climada) for a country using 
     a kernel density estimation with paramters h and noyau.
     h is measured is km.'''
-    h=round(h/6371,4) #transform in radians
-    data=pd.read_hdf("P:\\Projets Internes\\PLADIFES\\PLADIFES DATA CREATION\\Sectorial wealth\\data\\5 minutes\\LitPop_pc_300_arcsec_"+country_codes[country]+"_v1.hdf5")
+    h_kernel=round(h/6371,4) #transform in radians
+    data=pd.read_hdf(input_path)
     coordinates=data[['latitude','longitude']].values
     coordinates=np.radians(coordinates)
-    kde = KernelDensity(bandwidth=h, metric='haversine',kernel=noyau).set_fit_request(sample_weight=True)
-    kde.fit(np.radians(coordinates_change(steel_plants.loc[steel_plants["Region"]==country_continent[country]])),sample_weight=weigths_continent2(country_continent[country]))
+    kde = KernelDensity(bandwidth=h_kernel, metric='haversine',kernel=noyau).set_fit_request(sample_weight=True)
+    kde.fit(np.radians(coordinates_change(asset_database.loc[asset_database["Region"]==country_continent[country]])),sample_weight=weigths_continent(country_continent[country]))
     f_kernel=np.exp(kde.score_samples(coordinates))
     f_kernel=f_kernel/f_kernel.sum()
     f_kernel_output=f_kernel*country_output[country]
     data['value']=pd.DataFrame(f_kernel_output)
     data=data.rename(columns={"impf_":"impf_TC"})
     data=data[['value','latitude','longitude','impf_TC']]
-    data.to_csv("new bases exposure\\"+country+"_steel.csv",index=False)
+    data.to_csv(output_path+country+'.csv',index=False)
     return data
 
 
-def database_exposure_country_coast_corrected(country, h, noyau,rayon):
+def database_exposure_country_coast_corrected(input_path,asset_database,country, h, noyau,rayon, output_path):
     '''Creates a database exposure (adapted to use with Climada) for a country using 
     a kernel density estimation corrected for the plants that are close to
     the coastline.'''
     
-    data=pd.read_hdf("P:\\Projets Internes\\PLADIFES\\PLADIFES DATA CREATION\\Sectorial wealth\\data\\5 minutes\\LitPop_pc_300_arcsec_"+country_codes[country]+"_v1.hdf5")
+    data=pd.read_hdf(input_path)
     coordinates=data[['latitude','longitude']].values
     coordinates=np.radians(coordinates)
     h=round(h/6371,4) #transform in radians
     kde = KernelDensity(bandwidth=h, metric='haversine',kernel=noyau).set_fit_request(sample_weight=True)
-    kde.fit(np.radians(coordinates_change(steel_plants.loc[steel_plants["Region"]==country_continent[country]])),sample_weight=weigths_continent2(country_continent[country]))
+    kde.fit(np.radians(coordinates_change(asset_database.loc[asset_database["Region"]==country_continent[country]])),sample_weight=weigths_continent(country_continent[country]))
     f_kernel=np.exp(kde.score_samples(coordinates))
     data['f_kernel']=pd.DataFrame(f_kernel)
-    steel_plants_country=steel_plants.loc[(steel_plants['Country']==country)&(steel_plants['more_than_50km']==False)]
-    for index,row in steel_plants_country.iterrows():
+    asset_plants_country=asset_database.loc[(asset_database['Country']==country)&(asset_database['more_than_50km']==False)]
+    for index,row in asset_plants_country.iterrows():
         lat,lon=row['latitude'],row['longitude']
         correction_factor=correction_coast_factor((lon,lat),h)
         data['distance'] = data.apply(lambda x: haversine_distance((lat,lon), (x['latitude'], x['longitude'])), axis=1)
@@ -112,5 +125,5 @@ def database_exposure_country_coast_corrected(country, h, noyau,rayon):
     data['value']=pd.DataFrame(f_kernel_output)
     data=data.rename(columns={"impf_":"impf_TC"})
     data=data[['value','latitude','longitude','impf_TC']]
-    data.to_csv("new bases exposure\\"+country+"_steel_coast_corrected.csv",index=False)
+    data.to_csv(output_path+country+'.csv',index=False)
     return data
