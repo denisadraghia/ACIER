@@ -15,15 +15,15 @@ In order to fully comprehend the future physical risk in the context of climate 
 First, we estimate sectoral densities based on the physical assets for heavy industries as Steel, Cement,.. For the sectors with unavailable data, we use the LitPop wealth density of physical assets (refer to the first reference) multiplied by a proportional factor.
 
 
-The densities estimated serve as the basis for estimating sector-specific damages caused by tropical cyclones, employing the Python module <b>Catherina<b>. This module generates tropical cyclones under various climate scenarios (such as RCP 4.5, 8.5, etc.) and evaluates the resulting damages on a grid derived from the LitPop database (refer to the first reference).
+The densities estimated serve as the basis for estimating sector-specific damages caused by tropical cyclones, employing the Python module <b>Catherina</b>. This module generates tropical cyclones under various climate scenarios (such as RCP 4.5, 8.5, etc.) and evaluates the resulting damages on a grid derived from the LitPop database (refer to the first reference).
 
-After calculating sector-specific damages, we examine their propagation within the economy, transitioning from one sector to another. This analysis is conducted through the ARIO model, utilizing its Python implementation, the BoARIO package.
+After calculating sector-specific damages, we examine their propagation within the economy, transitioning from one sector to another. This analysis is conducted through the ARIO model, using its Python implementation, the BoARIO package.
 
 We use EXIOBASE3 (a multi-regional input-output matrix) to represent the transactions flows between different sectors of the economy.
 
 ## <a id="pladifes"></a> Pladifes
 
-Pladifes is a research program aiming at easing the research in green and sustainable finance, as well as traditional one. They are the main authors of <b>CGEE</b>. Learn more about Pladifes [here](https://www.institutlouisbachelier.org/en/pladifes-a-large-financial-and-extra-financial-database-project-2/).
+Pladifes is a research program aiming at easing the research in green and sustainable finance, as well as traditional one. They are the main authors of the <b>Physical Risk Module </b>. Learn more about Pladifes [here](https://www.institutlouisbachelier.org/en/pladifes-a-large-financial-and-extra-financial-database-project-2/).
 
 Databases produced in the context of this project are available [here](https://pladifes.institutlouisbachelier.org/data/#ghg-estimations). Other Paldifes databases can be access [here (only ESG)](https://pladifes.institutlouisbachelier.org/data/) and [here (financial and soon ESG)](https://www.eurofidai.org/).
 
